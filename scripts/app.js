@@ -339,6 +339,61 @@
   // Uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);
 
+    //CUSTOM FOOD CODE STARTING HERE
+    // https://developer.yahoo.com/yql/
+    // select * from html where url="http://www.bbcgoodfood.com/recipes" and compat="html5" and xpath='//div[contains(@class,"editors-choice__carousel")]'
+
+    // 1. fetch editors pick from yahoo
+
+    // 2. extract todays 2 recipies
+
+    app.getEditorsPick = function(key, label) {
+        var statement = 'select * from html where url="http://www.bbcgoodfood.com/recipes" and compat="html5" and xpath="//div[contains(@class,"editors-choice__carousel")]"';
+        var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' +
+            statement;
+        // Cache logic here
+        if ('caches' in window) {
+            /*
+             * Check if the service worker has already cached this city's weather
+             * data. If the service worker has the data, then display the cached
+             * data while the app fetches the latest data.
+             */
+            caches.match(url).then(function(response) {
+                if (response) {
+                    response.json().then(function updateFromCache(json) {
+                        var results = json.query.results;
+                        results.key = key;
+                        results.label = label;
+                        results.created = json.query.created;
+                        app.updateForecastCard(results);
+                    });
+                }
+            });
+        }
+        // Fetch the latest data.
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                if (request.status === 200) {
+                    var response = JSON.parse(request.response);
+                    var results = response.query.results;
+                    results.key = key;
+                    results.label = label;
+                    results.created = response.query.created;
+                    app.updateForecastCard(results);
+                }
+            } else {
+                // Return the initial weather forecast since no data is available.
+                app.updateForecastCard(initialWeatherForecast);
+            }
+        };
+        request.open('GET', url);
+        request.send();
+    };
+
+
+
+
   /************************************************************************
    *
    * Code required to start the app
