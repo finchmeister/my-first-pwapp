@@ -89,6 +89,8 @@
     var current = data.channel.item.condition;
     var humidity = data.channel.atmosphere.humidity;
     var wind = data.channel.wind;
+    var tempUnit = data.channel.units.temperature;
+    var speedUnit = data.channel.units.speed;
 
     var card = app.visibleCards[data.key];
     if (!card) {
@@ -119,12 +121,14 @@
     card.querySelector('.current .icon').classList.add(app.getIconClass(current.code));
     card.querySelector('.current .temperature .value').textContent =
       Math.round(current.temp);
+    card.querySelector('.current .temperature .scale').textContent = '°' + tempUnit;
     card.querySelector('.current .sunrise').textContent = sunrise;
     card.querySelector('.current .sunset').textContent = sunset;
     card.querySelector('.current .humidity').textContent =
       Math.round(humidity) + '%';
     card.querySelector('.current .wind .value').textContent =
       Math.round(wind.speed);
+    card.querySelector('.current .wind .scale').textContent = speedUnit;
     card.querySelector('.current .wind .direction').textContent = wind.direction;
     var nextDays = card.querySelectorAll('.future .oneday');
     var today = new Date();
@@ -166,10 +170,10 @@
    */
   app.getForecast = function(key, label) {
     console.log('getForecast');
-    var statement = 'select * from weather.forecast where woeid=' + key;
+    var statement = 'select * from weather.forecast where u=\'c\' and woeid=' + key;
     var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' +
         statement;
-    // TODO add cache logic here
+    // Cache logic here
     if ('caches' in window) {
       /*
        * Check if the service worker has already cached this city's weather
@@ -217,7 +221,7 @@
     });
   };
 
-  // TODO add saveSelectedCities function here
+  // SaveSelectedCities function here
   // Save list of cities to localStorage.
   app.saveSelectedCities = function() {
     var selectedCities = JSON.stringify(app.selectedCities);
@@ -306,7 +310,7 @@
         condition: {
           text: "Windy",
           date: "Thu, 21 Jul 2016 09:00 PM EDT",
-          temp: 56,
+          temp: 13,
           code: 24
         },
         forecast: [
@@ -325,10 +329,14 @@
       wind: {
         speed: 25,
         direction: 195
+      },
+      units: {
+        speed: "km/h",
+        temperature: "C"
       }
     }
   };
-  // TODO uncomment line below to test app with fake data
+  // Uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);
 
   /************************************************************************
@@ -342,7 +350,7 @@
    *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
    ************************************************************************/
 
-  // TODO add startup code here
+  // Startup code here
   app.selectedCities = localStorage.selectedCities;
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
@@ -362,7 +370,7 @@
     app.saveSelectedCities();
   }
 
-  // TODO add service worker code here
+  // Service worker code here
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('./service-worker.js')
