@@ -19,7 +19,7 @@
   var app = {
     isLoading: true,
     visibleCards: {},
-    selectedCities: [],
+    selectedCities: [], //TODO refactor
     spinner: document.querySelector('.loader'),
     cardTemplate: document.querySelector('.cardTemplate'),
     container: document.querySelector('.main'),
@@ -49,12 +49,11 @@
     var select = document.getElementById('selectCityToAdd');
     var selected = select.options[select.selectedIndex];
     var key = selected.value;
-    var label = selected.textContent;
     if (!app.selectedCities) {
       app.selectedCities = [];
     }
-    app.getForecast(key, label);
-    app.selectedCities.push({key: key, label: label});
+    app.getNextTrain(key);
+    app.selectedCities.push({key: key});
     app.saveSelectedCities();
     app.toggleAddDialog(false);
   });
@@ -153,6 +152,60 @@
     }
   };
 
+  app.updateNextTrainCard = function(data) {
+    var dataLastUpdated = new Date(data.generatedAt);
+    var destinationLocationName = data.locationName;
+    var fromLocationName = data.filterLocationName;
+
+    // ACTRDG
+    var routeId = data.filtercrs + data.crs;
+
+    var card = app.visibleCards[routeId];
+    // If a card doesn't already exist, clone the hidden template and make it visible
+    if (!card) {
+      card = app.cardTemplate.cloneNode(true);
+      card.classList.remove('cardTemplate');
+      card.querySelector('.location').textContent = data.filtercrs + ' to ' + data.crs;
+      card.removeAttribute('hidden');
+      app.container.appendChild(card);
+      app.visibleCards[routeId] = card;
+    }
+
+    // Verifies the data provide is newer than what's already visible
+    // on the card, if it's not bail, if it is, continue and update the
+    // time saved in the card
+    var cardLastUpdatedElem = card.querySelector('.card-last-updated');
+    var cardLastUpdated = cardLastUpdatedElem.textContent;
+    if (cardLastUpdated) {
+      cardLastUpdated = new Date(cardLastUpdated);
+      // Bail if the card has more recent data then the data
+      if (dataLastUpdated.getTime() < cardLastUpdated.getTime()) {
+        return;
+      }
+    }
+    cardLastUpdatedElem.textContent = data.created;
+
+
+    // Get all the divs
+    var nextTrains = card.querySelectorAll('.future .oneday');
+    for (var i = 0; i < 4; i++) {
+      var nextTrain = nextTrains[i];
+      var upcomingTrains = data.trainServices[i];
+      if (upcomingTrains && nextTrain) {
+        nextTrain.querySelector('.date').textContent = i + 1;
+        //nextTrain.querySelector('.icon').classList.add(app.getIconClass(daily.code));
+        nextTrain.querySelector('.temp-high .value').textContent = upcomingTrains.eta;
+        nextTrain.querySelector('.temp-low .value').textContent = upcomingTrains.sta;
+      }
+    }
+    // Not sure if functional
+    if (app.isLoading) {
+      app.spinner.setAttribute('hidden', true);
+      app.container.removeAttribute('hidden');
+      app.isLoading = false;
+    }
+  };
+
 
   /*****************************************************************************
    *
@@ -217,7 +270,7 @@
   app.updateForecasts = function() {
     var keys = Object.keys(app.visibleCards);
     keys.forEach(function(key) {
-      app.getForecast(key);
+      app.getNextTrain(key);
     });
   };
 
@@ -226,6 +279,14 @@
   app.saveSelectedCities = function() {
     var selectedCities = JSON.stringify(app.selectedCities);
     localStorage.selectedCities = selectedCities;
+  };
+
+  // Returns the journey params from the id eg ACTRDG (Ascot to Reading)
+  app.getJourneyFromId = function(id) {
+    return {
+      from : id.slice(0,3),
+      to : id.slice(3,6)
+    }
   };
 
   app.getIconClass = function(weatherCode) {
@@ -336,60 +397,138 @@
       }
     }
   };
+
+  var initialNextTrain = {
+    trainServices: [
+      {
+        origin: [
+          {
+            locationName: "London Waterloo",
+            crs: "WAT",
+            via: null,
+            futureChangeTo: null,
+            assocIsCancelled: false
+          }
+        ],
+        destination: [
+          {
+            locationName: "Reading",
+            crs: "RDG",
+            via: null,
+            futureChangeTo: null,
+            assocIsCancelled: false
+          }
+        ],
+        currentOrigins: null,
+        currentDestinations: null,
+        rsid: null,
+        sta: "09:15",
+        eta: "09:18",
+        std: null,
+        etd: null,
+        platform: "4",
+        operator: "South West Trains",
+        operatorCode: "SW",
+        isCircularRoute: false,
+        isCancelled: false,
+        filterLocationCancelled: false,
+        serviceType: 0,
+        length: 8,
+        detachFront: false,
+        isReverseFormation: false,
+        cancelReason: null,
+        delayReason: null,
+        serviceID: "dKUmZ+NF0yluBH747tIbDw==",
+        serviceIdPercentEncoded: "dKUmZ%2bNF0yluBH747tIbDw%3d%3d",
+        serviceIdGuid: "6726a574-45e3-29d3-6e04-7ef8eed21b0f",
+        serviceIdUrlSafe: "dKUmZ-NF0yluBH747tIbDw",
+        adhocAlerts: null
+      }
+    ],
+    busServices: null,
+    ferryServices: null,
+    generatedAt: "2016-11-18T09:18:22.6223445+00:00",
+    locationName: "Reading",
+    crs: "RDG",
+    filterLocationName: "Ascot",
+    filtercrs: "ACT",
+    filterType: 1,
+    nrccMessages: [
+      {
+        value: "Journeys between Reading and Guildford are being delayed by up to 40 minutes. More details can be found in <A href=\"http://nationalrail.co.uk/service_disruptions/151166.aspx\">Latest Travel News.</A>"
+      }
+    ],
+    platformAvailable: true,
+    areServicesAvailable: true
+  };
+
+
+
+
   // Uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);
 
-    //CUSTOM FOOD CODE STARTING HERE
-    // https://developer.yahoo.com/yql/
-    // select * from html where url="http://www.bbcgoodfood.com/recipes" and compat="html5" and xpath='//div[contains(@class,"editors-choice__carousel")]'
 
-    // 1. fetch editors pick from yahoo
+  app.getNextTrain = function(key) {
+//RDG, ACT, BCE, WKM, GLD, WAT
+    var journey = app.getJourneyFromId(key);
 
-    // 2. extract todays 2 recipies
-
-    app.getEditorsPick = function(key, label) {
-        var statement = 'select * from html where url="http://www.bbcgoodfood.com/recipes" and compat="html5" and xpath="//div[contains(@class,"editors-choice__carousel")]"';
-        var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' +
-            statement;
-        // Cache logic here
-        if ('caches' in window) {
-            /*
-             * Check if the service worker has already cached this city's weather
-             * data. If the service worker has the data, then display the cached
-             * data while the app fetches the latest data.
-             */
-            caches.match(url).then(function(response) {
-                if (response) {
-                    response.json().then(function updateFromCache(json) {
-                        var results = json.query.results;
-                        results.key = key;
-                        results.label = label;
-                        results.created = json.query.created;
-                        app.updateForecastCard(results);
-                    });
-                }
-            });
+    // Hardcoding in to begin with
+    var url = "https://huxley.apphb.com/all/" + journey.to + "/from/" + journey.from + "/5?accessToken=b7292523-3aab-40be-821b-ca59a2702b86";
+    // Cache logic here
+    if ('caches' in window) {
+      /*
+       * Check if the service worker has already cached this journey train
+       * data. If the service worker has the data, then display the cached
+       * data while the app fetches the latest data.
+       */
+      caches.match(url).then(function(response) {
+        if (response) {
+          response.json().then(function updateFromCache(json) {
+            app.updateNextTrainCard(json);
+          });
         }
-        // Fetch the latest data.
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = function() {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status === 200) {
-                    var response = JSON.parse(request.response);
-                    var results = response.query.results;
-                    results.key = key;
-                    results.label = label;
-                    results.created = response.query.created;
-                    app.updateForecastCard(results);
-                }
-            } else {
-                // Return the initial weather forecast since no data is available.
-                app.updateForecastCard(initialWeatherForecast);
-            }
-        };
-        request.open('GET', url);
-        request.send();
+      });
+    }
+    // Fetch the latest data.
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+      if (request.readyState === XMLHttpRequest.DONE) {
+        if (request.status === 200) {
+          var response = JSON.parse(request.response);
+          if (response.trainServices && response.trainServices.length > 0) {
+            app.updateNextTrainCard(response);
+          }
+          else {
+            //NO services
+            // TODO handle
+            console.log('No Service')
+          }
+        }
+      } else {
+        // Return the initial weather forecast since no data is available.
+        app.updateNextTrainCard(initialNextTrain);
+      }
     };
+    request.open('GET', url);
+    request.send();
+
+    /*var r = new XMLHttpRequest();
+    r.open("GET", url, true);
+    r.onreadystatechange = function () {
+      if (r.readyState != 4 || r.status != 200) return;
+      var resp = JSON.parse(r.response);
+      if (resp.trainServices && resp.trainServices.length > 0) {
+        alert("The next train to arrive at " + resp.locationName + " from " + resp.filterLocationName + " will get in at " + resp.trainServices[0].sta);
+      } else {
+        alert("Sorry, no trains from " + resp.filterLocationName + " arriving soon");
+      }
+    };
+    r.send();*/
+  };
+
+
+
 
 
 
@@ -410,7 +549,7 @@
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
     app.selectedCities.forEach(function(city) {
-      app.getForecast(city.key, city.label);
+      app.getNextTrain(city.key);
     });
   } else {
     /* The user is using the app for the first time, or the user has not
@@ -418,9 +557,9 @@
      * scenario could guess the user's location via IP lookup and then inject
      * that data into the page.
      */
-    app.updateForecastCard(initialWeatherForecast);
+    app.updateNextTrainCard(initialNextTrain);
     app.selectedCities = [
-      {key: initialWeatherForecast.key, label: initialWeatherForecast.label}
+      {key: 'ACTRDG'} //TODO don't hardcode
     ];
     app.saveSelectedCities();
   }

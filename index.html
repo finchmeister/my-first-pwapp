@@ -21,7 +21,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather PWA</title>
+  <title>Ascot Trains PWA</title>
   <link rel="stylesheet" type="text/css" href="styles/inline.css">
 
   <!-- TODO add manifest here -->
@@ -37,7 +37,7 @@
 <body>
 
   <header class="header">
-    <h1 class="header__title">Weather PWA</h1>
+    <h1 class="header__title">Ascot Trains PWA</h1>
     <button id="butRefresh" class="headerButton" aria-label="Refresh"></button>
     <button id="butAdd" class="headerButton" aria-label="Add"></button>
   </header>
@@ -61,7 +61,7 @@
           <div class="wind">
             <span class="value"></span>
             <span class="scale"></span>
-            <span class="direction"></span>°
+            <span class="direction"></span>
           </div>
           <div class="sunrise"></div>
           <div class="sunset"></div>
@@ -72,70 +72,40 @@
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
         <div class="oneday">
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
         <div class="oneday">
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
         <div class="oneday">
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
       </div>
@@ -144,13 +114,13 @@
 
   <div class="dialog-container">
     <div class="dialog">
-      <div class="dialog-title">Add new city</div>
+      <div class="dialog-title">Add new route</div>
       <div class="dialog-body">
         <select id="selectCityToAdd">
           <!-- Values map to Yahoo Weather API Where On Earth Identifiers (WOEIDs).
                https://developer.yahoo.com/weather/documentation.html#req -->
-          <option value="11090">Ascot, UK</option>
-          <option value="32997">Reading, UK</option>
+          <option value="ACTRDG">Ascot to Reading</option>
+          <option value="ACTWAT">Ascot to London Waterloo</option>
           <option value="36875">Tadley, UK</option>
           <option value="2459115">New York, NY</option>
           <option value="2487956">San Francisco, CA</option>

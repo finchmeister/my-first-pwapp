@@ -56,13 +56,17 @@ body {
   -webkit-align-content: stretch;
       -ms-flex-line-pack: stretch;
           align-content: stretch;
-  background: #ececec; }
+  background: #ececec;
+  background-image: url(https://images.unsplash.com/photo-1461831402920-90e36acc8160?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop=);
+  background-size: cover;
+
+}
 
 .header {
   width: 100%;
   height: 56px;
   color: #FFF;
-  background: #3F51B5;
+  background: #F70C36;
   position: fixed;
   font-size: 20px;
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2);
@@ -130,7 +134,7 @@ body {
           transform: translate(-50%, -50%); }
   .loader #spinner {
     box-sizing: border-box;
-    stroke: #673AB7;
+    stroke: rgb(255, 255, 255);
     stroke-width: 3px;
     -webkit-transform-origin: 50%;
             transform-origin: 50%;
@@ -393,14 +397,14 @@ body {
   .mdl-button:active {
     background-color: rgba(158, 158, 158, 0.4); }
   .mdl-button.mdl-button--colored {
-    color: #3f51b5; }
+    color: #F70C36; }
     .mdl-button.mdl-button--colored:focus:not(:active) {
       background-color: rgba(0, 0, 0, 0.12); }
 
 .mdl-button--primary.mdl-button--primary {
-  color: #3f51b5; }
+  color: #F70C36; }
   .mdl-button--primary.mdl-button--primary .mdl-ripple {
     background: white; }
   .mdl-button--primary.mdl-button--primary.mdl-button--raised, .mdl-button--primary.mdl-button--primary.mdl-button--fab {
     color: white;
-    background-color: #3f51b5; }
+    background-color: #F70C36; }
