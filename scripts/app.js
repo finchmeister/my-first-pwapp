@@ -81,6 +81,10 @@
 
   // Updates a weather card with the latest weather forecast. If the card
   // doesn't already exist, it's cloned from the template.
+  /**
+   * @deprecated
+   * @param data
+   */
   app.updateForecastCard = function(data) {
     var dataLastUpdated = new Date(data.created);
     var sunrise = data.channel.astronomy.sunrise;
@@ -469,6 +473,10 @@
   // app.updateForecastCard(initialWeatherForecast);
 
 
+  /**
+   *
+   * @param key e.g., ACTRDG
+   */
   app.getNextTrain = function(key) {
 //RDG, ACT, BCE, WKM, GLD, WAT
     var journey = app.getJourneyFromId(key);
@@ -557,7 +565,9 @@
      * scenario could guess the user's location via IP lookup and then inject
      * that data into the page.
      */
+
     app.updateNextTrainCard(initialNextTrain);
+    app.getNextTrain('ACTRDG');
     app.selectedCities = [
       {key: 'ACTRDG'} //TODO don't hardcode
     ];
