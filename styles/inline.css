@@ -259,16 +259,17 @@ body {
   font-size: 1.75em; }
 
 .weather-forecast .updatedAt, .weather-forecast .description {
-  font-size: 1.25em;
+  font-size: 1em;
 }
 .weather-forecast .updatedAt:before {
   content: "Last Updated At: ";
   color: #888; }
-.weather-forecast .nextTrainTime:before {
+.weather-forecast .nextTrainTimeText:before {
   content: "Next Train Departure: ";
   color: #888; }
-.weather-forecast .nextTrainSTA:before {
-  content: "STA: ";
+
+
+.weather-forecast .nextTrainSTA {
   color: #888; }
 .weather-forecast .nextTrainStatus:before {
   content: "Next Train Status: ";

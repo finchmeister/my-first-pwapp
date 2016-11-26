@@ -36,7 +36,7 @@
 
   document.getElementById('butRefresh').addEventListener('click', function() {
     // Refresh all of the forecasts
-    app.updateForecasts();
+    app.updateNextTrains();
   });
 
   document.getElementById('butAdd').addEventListener('click', function() {
@@ -162,7 +162,7 @@
     var fromLocationName = data.filterLocationName;
 
     // ACTRDG
-    var routeId = data.filtercrs + data.crs;
+    var routeId = data.crs + data.filtercrs;
 
     var card = app.visibleCards[routeId];
     // If a card doesn't already exist, clone the hidden template and make it visible
@@ -189,13 +189,14 @@
       }
     }
     cardLastUpdatedElem.textContent = data.generatedAt;
-    card.querySelector('.updatedAt').textContent = dataLastUpdated;
+    card.querySelector('.updatedAt').textContent = dataLastUpdated.toTimeString().substr(0, 5);
 
     // Next Train
     var nextTrainData = data.trainServices[0];
-    if (nextTrainData.eta == 'On Time') {
-      nextTrainData.eta = nextTrainData.sta;
+    if (nextTrainData.etd == 'On time') {
+      nextTrainData.etd = nextTrainData.std;
     }
+
     card.querySelector('.nextTrainTime').textContent = nextTrainData.etd;
     card.querySelector('.nextTrainSTA').textContent = nextTrainData.std;
 
@@ -227,7 +228,7 @@
     // Get all the divs
     var nextTrains = card.querySelectorAll('.future .oneday');
     for (var i = 1; i < 4; i++) {
-      var nextTrainCard = nextTrains[i];
+      var nextTrainCard = nextTrains[i - 1];
       var upcomingTrains = data.trainServices[i];
       if (upcomingTrains && nextTrainCard) {
         nextTrainCard.querySelector('.date').textContent = i + 1;
@@ -318,8 +319,10 @@
   };
 
   // Iterate all of the cards and attempt to get the latest forecast data
-  app.updateForecasts = function() {
+  app.updateNextTrains = function() {
     var keys = Object.keys(app.visibleCards);
+    console.log('keys');
+    console.log(keys);
     keys.forEach(function(key) {
       app.getNextTrain(key);
     });
@@ -528,7 +531,6 @@
 //RDG, ACT, BCE, WKM, GLD, WAT
     var journey = app.getJourneyFromId(key);
 
-    // Hardcoding in to begin with
     var url = "https://huxley.apphb.com/all/" + journey.from + "/to/" + journey.to + "/5?accessToken=b7292523-3aab-40be-821b-ca59a2702b86";
     // Cache logic here
     if ('caches' in window) {
@@ -562,7 +564,7 @@
         }
       } else {
         // Return the initial weather forecast since no data is available.
-        app.updateNextTrainCard(initialNextTrain);
+        //app.updateNextTrainCard(initialNextTrain);
       }
     };
     request.open('GET', url);
@@ -613,7 +615,7 @@
      * that data into the page.
      */
 
-    app.updateNextTrainCard(initialNextTrain);
+    //app.updateNextTrainCard(initialNextTrain);
     app.getNextTrain('ACTRDG');
     app.selectedCities = [
       {key: 'ACTRDG'} //TODO don't hardcode
