@@ -211,9 +211,13 @@
         styleColour = 'red';
       }
     }
-    else {
+    else if(diffInMins == 0) {
       nextTrainStatus = 'On time';
       styleColour = 'green';
+    }
+    else {
+      nextTrainStatus = nextTrainData.etd;
+      styleColour = 'red';
     }
     nextTrainStatusDiv.textContent = nextTrainStatus;
     if (styleColour != '') {
@@ -221,20 +225,28 @@
     }
 
 
-
+    //card.querySelector('.arrivalTime').textContent = nextTrainData.eta;
+    //card.querySelector('.sta').textContent = nextTrainData.sta;
     card.querySelector('.platform').textContent = nextTrainData.platform;
+    card.querySelector('.finalDestination').textContent = nextTrainData.destination[0].locationName;
 
 
     // Get all the divs
-    var nextTrains = card.querySelectorAll('.future .oneday');
-    for (var i = 1; i < 4; i++) {
+    var nextTrains = card.querySelectorAll('.upComingTrains .upComingTrain');
+    for (var i = 1; i < 5; i++) {
       var nextTrainCard = nextTrains[i - 1];
       var upcomingTrains = data.trainServices[i];
       if (upcomingTrains && nextTrainCard) {
-        nextTrainCard.querySelector('.date').textContent = i + 1;
+        //nextTrainCard.querySelector('.date').textContent = i + 1;
         //nextTrain.querySelector('.icon').classList.add(app.getIconClass(daily.code));
-        nextTrainCard.querySelector('.temp-high .value').textContent = upcomingTrains.etd;
-        nextTrainCard.querySelector('.temp-low .value').textContent = upcomingTrains.std;
+        if (upcomingTrains.etd == 'On time') {
+          upcomingTrains.etd = upcomingTrains.std;
+        }
+        nextTrainCard.querySelector('.etd .value').textContent = upcomingTrains.etd;
+        nextTrainCard.querySelector('.std .value').textContent = upcomingTrains.std;
+        nextTrainCard.querySelector('.platformRow .value').textContent = upcomingTrains.platform;
+        nextTrainCard.querySelector('.destinationRow .value').textContent = upcomingTrains.destination[0].locationName;
+
       }
     }
     // Not sure if functional

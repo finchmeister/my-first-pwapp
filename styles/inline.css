@@ -57,7 +57,7 @@ body {
       -ms-flex-line-pack: stretch;
           align-content: stretch;
   background: #ececec;
-  background-image: url(https://images.unsplash.com/photo-1461831402920-90e36acc8160?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop=);
+  background-image: url("/images/trainBackground.jpeg");
   background-size: cover;
 
 }
@@ -258,6 +258,14 @@ body {
 .weather-forecast .location {
   font-size: 1.75em; }
 
+.weather-forecast .subHeading {
+  font-size: 1.25em;
+  padding: 10px 0 5px 0;
+}
+
+.weather-forecast .nextTrainTime {
+  font-size: 4em; }
+
 .weather-forecast .updatedAt, .weather-forecast .description {
   font-size: 1em;
 }
@@ -265,14 +273,18 @@ body {
   content: "Last Updated At: ";
   color: #888; }
 .weather-forecast .nextTrainTimeText:before {
-  content: "Next Train Departure: ";
+  content: "Departure: ";
   color: #888; }
 
 
 .weather-forecast .nextTrainSTA {
   color: #888; }
 .weather-forecast .nextTrainStatus:before {
-  content: "Next Train Status: ";
+  content: "Status: ";
+  color: #888; }
+
+.weather-forecast .arrivalTime:before {
+  content: "Arrives: ";
   color: #888; }
 
 .weather-forecast .nextTrainTimeMinsFromNow:before {
@@ -280,6 +292,9 @@ body {
   color: #888; }
 .weather-forecast .platform:before {
   content: "Platform: ";
+  color: #888; }
+.weather-forecast .finalDestination:before {
+  content: "Final Destination: ";
   color: #888; }
 
 .weather-forecast .current {
@@ -429,3 +444,43 @@ body {
   .mdl-button--primary.mdl-button--primary.mdl-button--raised, .mdl-button--primary.mdl-button--primary.mdl-button--fab {
     color: white;
     background-color: #F70C36; }
+
+.upComingTrain{
+  padding-bottom: 10px;
+}
+
+.upComingTrain {
+  vertical-align: bottom;
+}
+
+.eta-sta-cell, .destinationRow {
+  padding-right: 25px;
+}
+
+.destinationRow, .platformRow .value {
+  font-size: 1.25em;
+}
+
+.weather-forecast .upComingTrains .etd {
+  font-size: 1.5em;
+}
+.weather-forecast .upComingTrains .std {
+  color: #888;
+}
+.weather-forecast .upComingTrains .platformRow:before {
+  content: "Plat. ";
+  color: #888; }
+
+@media (max-width: 450px) {
+  .eta-sta-cell, .destinationRow {
+    padding-right: 15px;
+  }
+
+  .destinationRow, .platformRow .value {
+    font-size: 1em;
+  }
+
+  .weather-forecast .upComingTrains .etd {
+    font-size: 1.25em;
+  }
+}
