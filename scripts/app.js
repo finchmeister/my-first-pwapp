@@ -169,7 +169,8 @@
     if (!card) {
       card = app.cardTemplate.cloneNode(true);
       card.classList.remove('cardTemplate');
-      card.querySelector('.location').textContent = data.filtercrs + ' to ' + data.crs;
+      //card.querySelector('.location').textContent = data.filtercrs + ' to ' + data.crs;
+      card.querySelector('.location').textContent = data.locationName + ' to ' + data.filterLocationName;
       card.removeAttribute('hidden');
       app.container.appendChild(card);
       app.visibleCards[routeId] = card;
@@ -187,19 +188,52 @@
         return;
       }
     }
-    cardLastUpdatedElem.textContent = data.created;
+    cardLastUpdatedElem.textContent = data.generatedAt;
+    card.querySelector('.updatedAt').textContent = dataLastUpdated;
+
+    // Next Train
+    var nextTrainData = data.trainServices[0];
+    if (nextTrainData.eta == 'On Time') {
+      nextTrainData.eta = nextTrainData.sta;
+    }
+    card.querySelector('.nextTrainTime').textContent = nextTrainData.etd;
+    card.querySelector('.nextTrainSTA').textContent = nextTrainData.std;
+
+    // Find the difference in minutes
+    var nextTrainStatusDiv = card.querySelector('.nextTrainStatus');
+    var diffInMins = app.differenceOfTimesInMinutes(nextTrainData.etd, nextTrainData.std);
+    var nextTrainStatus = '';
+    var styleColour = '';
+    if (diffInMins) {
+      nextTrainStatus = diffInMins + ' minutes late';
+      if (diffInMins >= 5) {
+        styleColour = 'red';
+      }
+    }
+    else {
+      nextTrainStatus = 'On time';
+      styleColour = 'green';
+    }
+    nextTrainStatusDiv.textContent = nextTrainStatus;
+    if (styleColour != '') {
+      nextTrainStatusDiv.style.color = styleColour;
+    }
+
+
+
+    card.querySelector('.platform').textContent = nextTrainData.platform;
 
 
     // Get all the divs
     var nextTrains = card.querySelectorAll('.future .oneday');
-    for (var i = 0; i < 4; i++) {
-      var nextTrain = nextTrains[i];
+    for (var i = 1; i < 4; i++) {
+      var nextTrainCard = nextTrains[i];
       var upcomingTrains = data.trainServices[i];
-      if (upcomingTrains && nextTrain) {
-        nextTrain.querySelector('.date').textContent = i + 1;
+      if (upcomingTrains && nextTrainCard) {
+        nextTrainCard.querySelector('.date').textContent = i + 1;
         //nextTrain.querySelector('.icon').classList.add(app.getIconClass(daily.code));
-        nextTrain.querySelector('.temp-high .value').textContent = upcomingTrains.eta;
-        nextTrain.querySelector('.temp-low .value').textContent = upcomingTrains.sta;
+        nextTrainCard.querySelector('.temp-high .value').textContent = upcomingTrains.etd;
+        nextTrainCard.querySelector('.temp-low .value').textContent = upcomingTrains.std;
       }
     }
     // Not sure if functional
@@ -209,6 +243,19 @@
       app.isLoading = false;
     }
   };
+
+  app.differenceOfTimesInMinutes = function(a, b) {
+    var currentDate = new Date();
+    currentDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
+    var diff = Math.abs(new Date(currentDate + ' ' + a) - new Date(currentDate + ' ' + b));
+    if (diff == 0) {
+      return diff
+    }
+    else {
+      return Math.floor((diff/1000)/60);
+    }
+  };
+
 
 
   /*****************************************************************************
@@ -428,8 +475,8 @@
         rsid: null,
         sta: "09:15",
         eta: "09:18",
-        std: null,
-        etd: null,
+        std: "08:45",
+        etd: "08:45",
         platform: "4",
         operator: "South West Trains",
         operatorCode: "SW",
@@ -482,7 +529,7 @@
     var journey = app.getJourneyFromId(key);
 
     // Hardcoding in to begin with
-    var url = "https://huxley.apphb.com/all/" + journey.to + "/from/" + journey.from + "/5?accessToken=b7292523-3aab-40be-821b-ca59a2702b86";
+    var url = "https://huxley.apphb.com/all/" + journey.from + "/to/" + journey.to + "/5?accessToken=b7292523-3aab-40be-821b-ca59a2702b86";
     // Cache logic here
     if ('caches' in window) {
       /*

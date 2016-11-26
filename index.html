@@ -21,7 +21,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ascot Trains PWA</title>
+  <title>Trains PWA</title>
   <link rel="stylesheet" type="text/css" href="styles/inline.css">
 
   <!-- TODO add manifest here -->
@@ -37,7 +37,7 @@
 <body>
 
   <header class="header">
-    <h1 class="header__title">Ascot Trains PWA</h1>
+    <h1 class="header__title">Live Trains PWA</h1>
     <button id="butRefresh" class="headerButton" aria-label="Refresh"></button>
     <button id="butAdd" class="headerButton" aria-label="Add"></button>
   </header>
@@ -47,14 +47,20 @@
       <div class="city-key" hidden></div>
       <div class="card-last-updated" hidden></div>
       <div class="location"></div>
-      <div class="date"></div>
+      <div class="updatedAt"></div>
       <div class="description"></div>
+      <div class="nextTrainTime"></div>
+      <div class="nextTrainSTA"></div>
+      <div class="nextTrainStatus"></div>
+      <div class="platform"></div>
+
       <div class="current">
         <div class="visual">
           <div class="icon"></div>
           <div class="temperature">
             <span class="value"></span><span class="scale"></span>
           </div>
+
         </div>
         <div class="description">
           <div class="humidity"></div>

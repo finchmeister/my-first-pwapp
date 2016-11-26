@@ -258,8 +258,28 @@ body {
 .weather-forecast .location {
   font-size: 1.75em; }
 
-.weather-forecast .date, .weather-forecast .description {
-  font-size: 1.25em; }
+.weather-forecast .updatedAt, .weather-forecast .description {
+  font-size: 1.25em;
+}
+.weather-forecast .updatedAt:before {
+  content: "Last Updated At: ";
+  color: #888; }
+.weather-forecast .nextTrainTime:before {
+  content: "Next Train Departure: ";
+  color: #888; }
+.weather-forecast .nextTrainSTA:before {
+  content: "STA: ";
+  color: #888; }
+.weather-forecast .nextTrainStatus:before {
+  content: "Next Train Status: ";
+  color: #888; }
+
+.weather-forecast .nextTrainTimeMinsFromNow:before {
+  content: "Next Train Minutes from Now: ";
+  color: #888; }
+.weather-forecast .platform:before {
+  content: "Platform: ";
+  color: #888; }
 
 .weather-forecast .current {
   display: -webkit-box;
