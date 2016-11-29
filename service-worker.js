@@ -16,8 +16,8 @@ var dataCacheName = 'trainData-v1';
 var cacheName = 'trainPWA-final-1';
 var filesToCache = [
   '/',
-  //'/index.html',
-  //'/scripts/app.js',
+  '/index.html',
+  '/scripts/app.js',
   '/styles/inline.css',
   '/images/trainBackground',
   '/images/ic_add_white_24px.svg',
