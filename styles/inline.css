@@ -57,7 +57,7 @@ body {
       -ms-flex-line-pack: stretch;
           align-content: stretch;
   background: #ececec;
-  background-image: url("/images/trainBackground.jpeg");
+  background-image: url("../images/trainBackground.jpeg");
   background-size: cover;
 
 }
