@@ -3,6 +3,7 @@
 - Github pages hosting
 - Offline message
 - Outdated data warning
+- Workout caching
 - Add custom destinations
   - UI
   - Store in cache
