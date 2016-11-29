@@ -204,7 +204,7 @@
     var nextTrainStatusDiv = card.querySelector('.nextTrainStatus');
     var diffInMins = app.differenceOfTimesInMinutes(nextTrainData.etd, nextTrainData.std);
     var nextTrainStatus = '';
-    var styleColour = '';
+    var styleColour = 'black';
     if (diffInMins) {
       nextTrainStatus = diffInMins + ' minutes late';
       if (diffInMins >= 5) {
@@ -220,9 +220,8 @@
       styleColour = 'red';
     }
     nextTrainStatusDiv.textContent = nextTrainStatus;
-    if (styleColour != '') {
-      nextTrainStatusDiv.style.color = styleColour;
-    }
+
+    nextTrainStatusDiv.style.color = styleColour;
 
 
     //card.querySelector('.arrivalTime').textContent = nextTrainData.eta;
