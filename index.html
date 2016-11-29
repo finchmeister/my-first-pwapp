@@ -21,7 +21,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather PWA</title>
+  <title>Trains PWA</title>
   <link rel="stylesheet" type="text/css" href="styles/inline.css">
 
   <!-- TODO add manifest here -->
@@ -29,15 +29,15 @@
   <!-- Add to home screen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Weather PWA">
-  <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
-  <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
-  <meta name="msapplication-TileColor" content="#2F3BA2">
+  <meta name="apple-mobile-web-app-title" content="Live Train PWA">
+  <link rel="apple-touch-icon" href="images/icons/icon-128x128.png">
+  <meta name="msapplication-TileImage" content="images/icons/icon-128x128.png">
+  <meta name="msapplication-TileColor" content="#F70C36">
 </head>
 <body>
 
   <header class="header">
-    <h1 class="header__title">Weather PWA</h1>
+    <h1 class="header__title">Live Trains PWA</h1>
     <button id="butRefresh" class="headerButton" aria-label="Refresh"></button>
     <button id="butAdd" class="headerButton" aria-label="Add"></button>
   </header>
@@ -47,21 +47,127 @@
       <div class="city-key" hidden></div>
       <div class="card-last-updated" hidden></div>
       <div class="location"></div>
-      <div class="date"></div>
-      <div class="description"></div>
-      <div class="current">
+      <div class="updatedAt"></div>
+      <div class="nextTrain">
+        <div class="subHeading">Next Train:</div>
+        <!-- <div class="description"></div>-->
+        <div class="mainInfo">
+          <div class="nextTrainTimeText"></div>
+          <span class="nextTrainTime"></span>
+          <span class="nextTrainSTA"></span>
+          <div class="nextTrainStatus"></div>
+          <!--<div class="arrivalTime"></div>-->
+        </div>
+        <div class="platformInfo">
+          <div class="platform"></div>
+          <div class="finalDestination"></div>
+        </div>
+      </div>
+
+      <div class="upComingTrains">
+        <div class="subHeading">Upcoming Trains:</div>
+        <div class="upComingTrain">
+          <span class="eta-sta-cell">
+              <span class="etd">
+                <span class="value"></span>
+              </span>
+          <span class="std">
+                <span class="value"></span>
+              </span>
+        </span>
+          <span class="destinationRow"><span class="value"></span></span>
+          <span class="platformRow"><span class="value"></span></span>
+        </div>
+
+        <div class="upComingTrain">
+          <span class="eta-sta-cell">
+              <span class="etd">
+                <span class="value"></span>
+              </span>
+          <span class="std">
+                <span class="value"></span>
+              </span>
+        </span>
+          <span class="destinationRow"><span class="value"></span></span>
+          <span class="platformRow"><span class="value"></span></span>
+        </div>
+
+        <div class="upComingTrain">
+          <span class="eta-sta-cell">
+              <span class="etd">
+                <span class="value"></span>
+              </span>
+          <span class="std">
+                <span class="value"></span>
+              </span>
+        </span>
+          <span class="destinationRow"><span class="value"></span></span>
+          <span class="platformRow"><span class="value"></span></span>
+        </div>
+
+
+
+
+
+
+        <!--<table class="mdl-data-table-custom">
+          <tbody>
+          <tr class="upComingTrain">
+            <td class="eta-sta-cell">
+              <span class="etd">
+                <span class="value"></span>
+              </span>
+              <span class="std">
+                <span class="value"></span>
+              </span>
+            </td>
+            <td class="mdl-data-table__cell&#45;&#45;non-numeric destinationRow"><span class="value"></span></td>
+            <td class="mdl-data-table__cell&#45;&#45;non-numeric platformRow"><span class="value"></span></td>
+          </tr>
+          <tr class="upComingTrain">
+            <td class="eta-sta-cell">
+              <span class="etd">
+                <span class="value"></span>
+              </span>
+              <span class="std">
+                <span class="value"></span>
+              </span>
+            </td>
+            <td class="mdl-data-table__cell&#45;&#45;non-numeric destinationRow"><span class="value"></span></td>
+            <td class="mdl-data-table__cell&#45;&#45;non-numeric platformRow"><span class="value"></span></td>
+          </tr>
+          <tr class="upComingTrain">
+            <td class="eta-sta-cell">
+              <span class="etd">
+                <span class="value"></span>
+              </span>
+              <span class="std">
+                <span class="value"></span>
+              </span>
+            </td>
+            <td class="mdl-data-table__cell&#45;&#45;non-numeric destinationRow"><span class="value"></span></td>
+            <td class="mdl-data-table__cell&#45;&#45;non-numeric platformRow"><span class="value"></span></td>
+          </tr>
+          </tbody>
+        </table>-->
+      </div>
+
+
+
+      <!--<div class="current">
         <div class="visual">
           <div class="icon"></div>
           <div class="temperature">
             <span class="value"></span><span class="scale"></span>
           </div>
+
         </div>
         <div class="description">
           <div class="humidity"></div>
           <div class="wind">
             <span class="value"></span>
             <span class="scale"></span>
-            <span class="direction"></span>°
+            <span class="direction"></span>
           </div>
           <div class="sunrise"></div>
           <div class="sunset"></div>
@@ -72,89 +178,47 @@
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
         <div class="oneday">
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
         <div class="oneday">
           <div class="date"></div>
           <div class="icon"></div>
           <div class="temp-high">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
           <div class="temp-low">
-            <span class="value"></span>°
+            <span class="value"></span>
           </div>
         </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-      </div>
+      </div>-->
     </div>
   </main>
 
   <div class="dialog-container">
     <div class="dialog">
-      <div class="dialog-title">Add new city</div>
+      <div class="dialog-title">Add new route</div>
       <div class="dialog-body">
         <select id="selectCityToAdd">
           <!-- Values map to Yahoo Weather API Where On Earth Identifiers (WOEIDs).
                https://developer.yahoo.com/weather/documentation.html#req -->
-          <option value="11090">Ascot, UK</option>
-          <option value="32997">Reading, UK</option>
-          <option value="36875">Tadley, UK</option>
-          <option value="2459115">New York, NY</option>
-          <option value="2487956">San Francisco, CA</option>
-          <option value="2490383">Seattle, WA</option>
+          <option value="ACTRDG">Ascot to Reading</option>
+          <option value="RDGACT">Reading to Ascot</option>
+          <option value="ACTWAT">Ascot to London Waterloo</option>
+          <option value="RDGPAD">Reading to London Paddington</option>
         </select>
       </div>
       <div class="dialog-buttons">
