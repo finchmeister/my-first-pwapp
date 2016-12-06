@@ -1,8 +1,10 @@
 # TODO
 
-- Github pages hosting
+## Should
+- ~~Github pages hosting~~ *Done: 29/11/2016*
 - Offline message
 - Outdated data warning
+- Relative time last updated message
 - Workout caching
 - Add custom destinations
   - UI

@@ -63,6 +63,15 @@
     app.toggleAddDialog(false);
   });
 
+  // Delete Card
+  var btnsClose = document.getElementsByClassName('butClose');
+  btnsClose.forEach()
+  document.getElementsByClassName('butClose').addEventListener('click', function() {
+    // Close the add new city dialog
+    // TODO fix this
+    console.log('hi bob');
+  });
+
 
   /*****************************************************************************
    *
