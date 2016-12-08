@@ -64,13 +64,20 @@
   });
 
   // Delete Card
-  var btnsClose = document.getElementsByClassName('butClose');
-  btnsClose.forEach()
-  document.getElementsByClassName('butClose').addEventListener('click', function() {
+  /*var btnsClose = document.getElementsByClassName('butClose');
+  btnsClose.forEach(function(key) {
+    console.log(key);
+  });*/
+  // TODO add event listener to entire class
+  document.getElementById('butCloseT').addEventListener('click', function() {
     // Close the add new city dialog
     // TODO fix this
-    console.log('hi bob');
+    // Find route id from this
+    // Unset app.visibleCards[routeId]
+    // 
+    console.log(this);
   });
+
 
 
   /*****************************************************************************
@@ -622,6 +629,24 @@
    ************************************************************************/
 
   // Startup code here
+
+  /*var btnsClose = document.getElementsByClassName('butClose');
+  //var btnsCloseKeys = Object.keys(btnsClose);
+  // JS foreach
+  var btnsCloseKeys = Object.keys(btnsClose).map(function (objectKey, index) {
+    var value = btnsClose[objectKey];
+    value.addEventListener('click', function() {
+      // Close the add new city dialog
+      app.toggleAddDialog(false);
+    });
+  });*/
+  //console.log(document.getElementsById('butCloseT'));
+  /*console.log(btnsClose);
+  btnsCloseKeys.forEach(function(btnsCloseKey) {
+    console.log(btnsCloseKey);
+  });*/
+
+
   app.selectedCities = localStorage.selectedCities;
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
