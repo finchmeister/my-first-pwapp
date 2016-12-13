@@ -492,8 +492,20 @@ body {
 }
 
 .butClose {
+  width: 24px;
+  height: 24px;
+  text-indent: -30000px;
+  overflow: hidden;
+  opacity: 0.54;
+  -webkit-transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  border: none;
+  outline: none;
+  cursor: pointer;
   position: absolute;
   right: 0;
-  padding: 16px;
+  padding: 24px;
   margin-top: -16px;
+  background: url(/images/ic_add_black_24px.svg) center center no-repeat;
+  transform: rotate(45deg);
 }

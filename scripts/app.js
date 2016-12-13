@@ -36,6 +36,7 @@
 
   document.getElementById('butRefresh').addEventListener('click', function() {
     // Refresh all of the forecasts
+
     app.updateNextTrains();
   });
 
@@ -63,21 +64,16 @@
     app.toggleAddDialog(false);
   });
 
-  // Delete Card
-  /*var btnsClose = document.getElementsByClassName('butClose');
-  btnsClose.forEach(function(key) {
-    console.log(key);
-  });*/
-  // TODO add event listener to entire class
-  document.getElementById('butCloseT').addEventListener('click', function() {
-    // Close the add new city dialog
-    // TODO fix this
-    // Find route id from this
-    // Unset app.visibleCards[routeId]
-    // 
-    console.log(this);
-  });
 
+  // Event listener for button close
+  // TODO why isnt this working????
+  var closeButtons = document.getElementsByClassName("butClose");
+  for (var i = 0; i < closeButtons.length; i++) {
+    closeButtons[i].addEventListener('click', function () {
+      // Delete the card
+      app.deleteCard();
+    });
+  }
 
 
   /*****************************************************************************
@@ -93,6 +89,26 @@
     } else {
       app.addDialog.classList.remove('dialog-container--visible');
     }
+  };
+
+
+  app.deleteCard = function () {
+    //TODO work this out
+    var closeButton = document.getElementById('deleteButtonId');
+    //console.log(app.visibleCards);
+    // Work out value
+    var cardToDelete = closeButton.closest(".card");
+
+    console.log(app.visibleCards);
+    var keys = Object.keys(app.visibleCards);
+    console.log(keys);
+    keys.forEach(function(key) {
+      console.log(app.visibleCards[key])
+    });
+
+    // Remove value from storage
+
+    // Delete node?
   };
 
   // Updates a weather card with the latest weather forecast. If the card
@@ -348,8 +364,6 @@
   // Iterate all of the cards and attempt to get the latest forecast data
   app.updateNextTrains = function() {
     var keys = Object.keys(app.visibleCards);
-    console.log('keys');
-    console.log(keys);
     keys.forEach(function(key) {
       app.getNextTrain(key);
     });
@@ -630,21 +644,7 @@
 
   // Startup code here
 
-  /*var btnsClose = document.getElementsByClassName('butClose');
-  //var btnsCloseKeys = Object.keys(btnsClose);
-  // JS foreach
-  var btnsCloseKeys = Object.keys(btnsClose).map(function (objectKey, index) {
-    var value = btnsClose[objectKey];
-    value.addEventListener('click', function() {
-      // Close the add new city dialog
-      app.toggleAddDialog(false);
-    });
-  });*/
-  //console.log(document.getElementsById('butCloseT'));
-  /*console.log(btnsClose);
-  btnsCloseKeys.forEach(function(btnsCloseKey) {
-    console.log(btnsCloseKey);
-  });*/
+  app.deleteCard();
 
 
   app.selectedCities = localStorage.selectedCities;
