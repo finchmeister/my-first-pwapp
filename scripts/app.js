@@ -65,18 +65,19 @@
   });
 
 
-  // Event listener for button close
-  // TODO why isnt this working????
-  var closeButtons = document.getElementsByClassName("butClose");
-  for (var i = 0; i < closeButtons.length; i++) {
-    closeButtons[i].addEventListener('click', function () {
-      // Delete the card
-      app.deleteCard();
-    });
-  }
+    // Event listener for button close
+    // TODO why isnt this working????
+    var closeButtons = document.getElementsByClassName("butClose");
+    for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].addEventListener('click', function () {
+            // Delete the card
+            console.log('bib');
+            app.deleteCard();
+        });
+    }
 
 
-  /*****************************************************************************
+    /*****************************************************************************
    *
    * Methods to update/refresh the UI
    *
@@ -93,7 +94,7 @@
 
 
   app.deleteCard = function () {
-    //TODO work this out
+    /*//TODO work this out
     var closeButton = document.getElementById('deleteButtonId');
     //console.log(app.visibleCards);
     // Work out value
@@ -106,9 +107,16 @@
       console.log(app.visibleCards[key])
     });
 
+    for (var i = 0; i < closeButtons.length; i++) {
+      closeButtons[i].addEventListener('click', function () {
+        // Delete the card
+        app.deleteCard();
+      });
+    }
+
     // Remove value from storage
 
-    // Delete node?
+    // Delete node?*/
   };
 
   // Updates a weather card with the latest weather forecast. If the card
