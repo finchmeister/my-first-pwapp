@@ -374,6 +374,8 @@
   // SaveSelectedCities function here
   // Save list of cities to localStorage.
   app.saveSelectedCities = function() {
+
+      app.handleOfflineMessage();
     var selectedCities = JSON.stringify(app.selectedCities);
     localStorage.selectedCities = selectedCities;
   };
@@ -569,6 +571,18 @@
     document.getElementById('offlineMessage').setAttribute('hidden', '');
   };
 
+  app.handleOfflineMessage = function () {
+    console.log('dekat');
+      if (navigator.onLine) {
+          app.hideOfflineMessage();
+
+      } else {
+          app.showOfflineMessage();
+      }
+  };
+
+
+
   // Uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);
 
@@ -652,13 +666,8 @@
    ************************************************************************/
 
   // Startup code here
+  app.handleOfflineMessage();
 
-    if (navigator.onLine) {
-        app.hideOfflineMessage();
-
-    } else {
-        app.showOfflineMessage();
-    }
 
   app.selectedCities = localStorage.selectedCities;
   if (app.selectedCities) {
