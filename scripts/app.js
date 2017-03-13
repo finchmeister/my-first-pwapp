@@ -36,6 +36,7 @@
 
   document.getElementById('butRefresh').addEventListener('click', function() {
     // Refresh all of the forecasts
+
     app.updateNextTrains();
   });
 
@@ -64,7 +65,9 @@
   });
 
 
-  /*****************************************************************************
+
+
+    /*****************************************************************************
    *
    * Methods to update/refresh the UI
    *
@@ -77,6 +80,27 @@
     } else {
       app.addDialog.classList.remove('dialog-container--visible');
     }
+  };
+
+
+  app.deleteCard = function (event) {
+    // Work out value
+    var cardToDelete = event.srcElement.closest(".card");
+      var keys = Object.keys(app.visibleCards);
+    keys.forEach(function(key) {
+
+      if (app.visibleCards[key] == cardToDelete) {
+        cardToDelete.remove();
+          app.selectedCities.forEach(function(selected, i) {
+            if (selected.key == key) {
+                app.selectedCities.splice(i, 1);
+            }
+          });
+          app.saveSelectedCities();
+      }
+
+    });
+
   };
 
   // Updates a weather card with the latest weather forecast. If the card
@@ -174,6 +198,13 @@
       card.removeAttribute('hidden');
       app.container.appendChild(card);
       app.visibleCards[routeId] = card;
+
+
+        // Add close button
+        card.querySelector('.butClose').addEventListener('click', function (event) {
+            // Delete the card
+            app.deleteCard(event);
+        });
     }
 
     // Verifies the data provide is newer than what's already visible
@@ -254,6 +285,9 @@
       app.container.removeAttribute('hidden');
       app.isLoading = false;
     }
+
+
+
   };
 
   app.differenceOfTimesInMinutes = function(a, b) {
@@ -332,8 +366,6 @@
   // Iterate all of the cards and attempt to get the latest forecast data
   app.updateNextTrains = function() {
     var keys = Object.keys(app.visibleCards);
-    console.log('keys');
-    console.log(keys);
     keys.forEach(function(key) {
       app.getNextTrain(key);
     });
@@ -342,6 +374,8 @@
   // SaveSelectedCities function here
   // Save list of cities to localStorage.
   app.saveSelectedCities = function() {
+
+      app.handleOfflineMessage();
     var selectedCities = JSON.stringify(app.selectedCities);
     localStorage.selectedCities = selectedCities;
   };
@@ -529,6 +563,25 @@
 
 
 
+  app.showOfflineMessage = function () {
+    document.getElementById('offlineMessage').removeAttribute('hidden');
+  };
+
+  app.hideOfflineMessage = function () {
+    document.getElementById('offlineMessage').setAttribute('hidden', '');
+  };
+
+  app.handleOfflineMessage = function () {
+    console.log('dekat');
+      if (navigator.onLine) {
+          app.hideOfflineMessage();
+
+      } else {
+          app.showOfflineMessage();
+      }
+  };
+
+
 
   // Uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);
@@ -613,6 +666,9 @@
    ************************************************************************/
 
   // Startup code here
+  app.handleOfflineMessage();
+
+
   app.selectedCities = localStorage.selectedCities;
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
