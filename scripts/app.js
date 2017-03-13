@@ -65,16 +65,6 @@
   });
 
 
-    // Event listener for button close
-    // TODO why isnt this working????
-    var closeButtons = document.getElementsByClassName("butClose");
-    for (var i = 0; i < closeButtons.length; i++) {
-        closeButtons[i].addEventListener('click', function () {
-            // Delete the card
-            console.log('bib');
-            app.deleteCard();
-        });
-    }
 
 
     /*****************************************************************************
@@ -93,30 +83,24 @@
   };
 
 
-  app.deleteCard = function () {
-    /*//TODO work this out
-    var closeButton = document.getElementById('deleteButtonId');
-    //console.log(app.visibleCards);
+  app.deleteCard = function (event) {
     // Work out value
-    var cardToDelete = closeButton.closest(".card");
-
-    console.log(app.visibleCards);
-    var keys = Object.keys(app.visibleCards);
-    console.log(keys);
+    var cardToDelete = event.srcElement.closest(".card");
+      var keys = Object.keys(app.visibleCards);
     keys.forEach(function(key) {
-      console.log(app.visibleCards[key])
+
+      if (app.visibleCards[key] == cardToDelete) {
+        cardToDelete.remove();
+          app.selectedCities.forEach(function(selected, i) {
+            if (selected.key == key) {
+                app.selectedCities.splice(i, 1);
+            }
+          });
+          app.saveSelectedCities();
+      }
+
     });
 
-    for (var i = 0; i < closeButtons.length; i++) {
-      closeButtons[i].addEventListener('click', function () {
-        // Delete the card
-        app.deleteCard();
-      });
-    }
-
-    // Remove value from storage
-
-    // Delete node?*/
   };
 
   // Updates a weather card with the latest weather forecast. If the card
@@ -214,6 +198,13 @@
       card.removeAttribute('hidden');
       app.container.appendChild(card);
       app.visibleCards[routeId] = card;
+
+
+        // Add close button
+        card.querySelector('.butClose').addEventListener('click', function (event) {
+            // Delete the card
+            app.deleteCard(event);
+        });
     }
 
     // Verifies the data provide is newer than what's already visible
@@ -294,6 +285,9 @@
       app.container.removeAttribute('hidden');
       app.isLoading = false;
     }
+
+
+
   };
 
   app.differenceOfTimesInMinutes = function(a, b) {
@@ -567,6 +561,13 @@
 
 
 
+  app.showOfflineMessage = function () {
+    document.getElementById('offlineMessage').removeAttribute('hidden');
+  };
+
+  app.hideOfflineMessage = function () {
+    document.getElementById('offlineMessage').setAttribute('hidden', '');
+  };
 
   // Uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);
@@ -652,8 +653,12 @@
 
   // Startup code here
 
-  app.deleteCard();
+    if (navigator.onLine) {
+        app.hideOfflineMessage();
 
+    } else {
+        app.showOfflineMessage();
+    }
 
   app.selectedCities = localStorage.selectedCities;
   if (app.selectedCities) {

@@ -509,3 +509,8 @@ body {
   background: url(/images/ic_add_black_24px.svg) center center no-repeat;
   transform: rotate(45deg);
 }
+
+#offlineMessage {
+  background-color: #f70c36;
+  color: white;
+}
