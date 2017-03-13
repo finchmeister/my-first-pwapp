@@ -506,7 +506,7 @@ body {
   right: 0;
   padding: 24px;
   margin-top: -16px;
-  background: url(/images/ic_add_black_24px.svg) center center no-repeat;
+  background: url(images/ic_add_black_24px.svg) center center no-repeat;
   transform: rotate(45deg);
 }
 

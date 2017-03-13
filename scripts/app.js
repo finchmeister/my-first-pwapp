@@ -36,8 +36,9 @@
 
   document.getElementById('butRefresh').addEventListener('click', function() {
     // Refresh all of the forecasts
+      app.handleOfflineMessage();
 
-    app.updateNextTrains();
+      app.updateNextTrains();
   });
 
   document.getElementById('butAdd').addEventListener('click', function() {
